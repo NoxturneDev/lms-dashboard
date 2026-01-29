@@ -20,6 +20,7 @@ export interface AuthState {
   isLoggedIn: boolean
   loginTeacher: (email: string, password: string) => Promise<void>
   loginStudent: (email: string, password: string) => Promise<void>
+  loginAdmin: (email: string, password: string) => Promise<void>
   logout: () => void
   clearError: () => void
 }
