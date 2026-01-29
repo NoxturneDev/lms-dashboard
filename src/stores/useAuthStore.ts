@@ -6,8 +6,10 @@ export interface User {
   id: string
   email: string
   name: string
-  userType: 'teacher' | 'student'
+  userType: 'teacher' | 'student' | 'admin'
   student_number?: string
+  school_id?: string
+  school_name?: string
 }
 
 export interface AuthState {

@@ -11,6 +11,9 @@ export interface StudentProfile {
 export interface AcademicRecord {
   course_title: string
   score: number
+  assignment_title: string
+  max_score: number
+  assignment_id: string
 }
 
 export interface ReportCard {
