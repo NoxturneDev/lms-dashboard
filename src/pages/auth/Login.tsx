@@ -28,8 +28,10 @@ const Login = () => {
       } else {
         await loginStudent(email, password)
       }
+      // Only navigate on successful login
       navigate('/')
     } catch (err: any) {
+      // Error occurred - stay on login page and show error
       setLocalError(err.response?.data?.error || 'Login failed')
     }
   }
