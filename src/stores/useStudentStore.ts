@@ -16,8 +16,14 @@ export interface AcademicRecord {
   assignment_id: string
 }
 
+export interface ReportCardStudentInfo {
+  name: string
+  email: string
+  student_number: string
+}
+
 export interface ReportCard {
-  student_info: StudentProfile
+  student_info: ReportCardStudentInfo
   academic_record: AcademicRecord[]
   generated_at: string
 }

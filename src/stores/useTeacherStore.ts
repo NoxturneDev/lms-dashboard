@@ -7,13 +7,25 @@ export interface Teacher {
   full_name: string
 }
 
+export interface TeacherCourse {
+  course_id: string
+  school_id: string
+  school_name: string
+  title: string
+  description: string
+  teacher_ids: string[]
+  teacher_names: string[]
+}
+
 export interface TeacherState {
   teachers: Teacher[]
   selectedTeacher: Teacher | null
+  teacherCourses: TeacherCourse[]
   isLoading: boolean
   error: string | null
   fetchTeachers: () => Promise<void>
   fetchTeacherById: (id: string) => Promise<void>
+  fetchTeacherCourses: (teacherId: string) => Promise<void>
   createTeacher: (email: string, fullName: string, password: string) => Promise<void>
   updateTeacher: (id: string, data: { email?: string; full_name?: string; password?: string }) => Promise<void>
   deleteTeacher: (id: string) => Promise<void>
@@ -23,6 +35,7 @@ export interface TeacherState {
 export const useTeacherStore = create<TeacherState>((set) => ({
   teachers: [],
   selectedTeacher: null,
+  teacherCourses: [],
   isLoading: false,
   error: null,
 
@@ -53,6 +66,23 @@ export const useTeacherStore = create<TeacherState>((set) => ({
       })
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Failed to fetch teacher'
+      set({
+        error: errorMessage,
+        isLoading: false,
+      })
+    }
+  },
+
+  fetchTeacherCourses: async (teacherId: string) => {
+    set({ isLoading: true, error: null })
+    try {
+      const response = await axiosClient.get(`/teachers/${teacherId}/courses`)
+      set({
+        teacherCourses: response.data.courses || [],
+        isLoading: false,
+      })
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.error || 'Failed to fetch teacher courses'
       set({
         error: errorMessage,
         isLoading: false,

@@ -54,12 +54,14 @@ export const useAuthStore = create<AuthState>()(
             token,
             isLoggedIn: true,
             isLoading: false,
+            error: null,
           })
         } catch (err: any) {
           const errorMessage = err.response?.data?.error || 'Login failed'
           set({
             error: errorMessage,
             isLoading: false,
+            isLoggedIn: false,
           })
           throw err
         }
@@ -86,12 +88,49 @@ export const useAuthStore = create<AuthState>()(
             token,
             isLoggedIn: true,
             isLoading: false,
+            error: null,
           })
         } catch (err: any) {
           const errorMessage = err.response?.data?.error || 'Login failed'
           set({
             error: errorMessage,
             isLoading: false,
+            isLoggedIn: false,
+          })
+          throw err
+        }
+      },
+
+      loginAdmin: async (email: string, password: string) => {
+        set({ isLoading: true, error: null })
+        try {
+          const response = await axiosClient.post('/auth/admin/login', {
+            email,
+            password,
+          })
+          const { token, user_id, name, school_id, school_name, userType } = response.data
+          const user: User = {
+            id: user_id,
+            email,
+            name,
+            userType,
+            school_id,
+            school_name,
+          }
+          localStorage.setItem('token', token)
+          set({
+            user,
+            token,
+            isLoggedIn: true,
+            isLoading: false,
+            error: null,
+          })
+        } catch (err: any) {
+          const errorMessage = err.response?.data?.error || 'Login failed'
+          set({
+            error: errorMessage,
+            isLoading: false,
+            isLoggedIn: false,
           })
           throw err
         }

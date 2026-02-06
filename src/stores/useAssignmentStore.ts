@@ -33,7 +33,6 @@ export const useAssignmentStore = create<AssignmentState>((set) => ({
     set({ isLoading: true, error: null })
     try {
       const response = await axiosClient.get(`/courses/${courseId}/assignments`)
-      console.log(response.data)
       set({
         assignments: response.data.assignments || [],
         isLoading: false,

@@ -6,7 +6,7 @@ export interface Class {
   school_id: string
   school_name: string
   name: string
-  grade_level: number
+  grade_level: string
 }
 
 export interface ClassState {
@@ -16,8 +16,8 @@ export interface ClassState {
   error: string | null
   fetchClasses: (schoolId?: string) => Promise<void>
   fetchClassById: (id: string) => Promise<void>
-  createClass: (schoolId: string, name: string, gradeLevel: number) => Promise<void>
-  updateClass: (id: string, data: { name?: string; grade_level?: number }) => Promise<void>
+  createClass: (schoolId: string, name: string, gradeLevel: string) => Promise<void>
+  updateClass: (id: string, data: { name?: string; grade_level?: string }) => Promise<void>
   deleteClass: (id: string) => Promise<void>
   clearError: () => void
 }
@@ -57,7 +57,7 @@ export const useClassStore = create<ClassState>((set) => ({
     }
   },
 
-  createClass: async (schoolId: string, name: string, gradeLevel: number) => {
+  createClass: async (schoolId: string, name: string, gradeLevel: string) => {
     set({ isLoading: true, error: null })
     try {
       await axiosClient.post('/classes', {
@@ -73,7 +73,7 @@ export const useClassStore = create<ClassState>((set) => ({
     }
   },
 
-  updateClass: async (id: string, data: { name?: string; grade_level?: number }) => {
+  updateClass: async (id: string, data: { name?: string; grade_level?: string }) => {
     set({ isLoading: true, error: null })
     try {
       await axiosClient.put(`/classes/${id}`, data)
