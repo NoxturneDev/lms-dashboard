@@ -12,11 +12,14 @@ const CourseDetails = () => {
   const { user } = useAuthStore()
   const { selectedCourse, fetchCourseById, isLoading } = useCourseStore()
   const { assignments, listAssignments, createAssignment, deleteAssignment } = useAssignmentStore()
-  const { enrollStudent } = useEnrollmentStore()
+  const { enrollStudent, studentCourses, fetchStudentEnrollments } = useEnrollmentStore()
 
   const [enrolling, setEnrolling] = useState(false)
-  const [enrolled, setEnrolled] = useState(false)
+  const [checkingEnrollment, setCheckingEnrollment] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Check if current student is enrolled in this course
+  const enrolled = user?.userType === 'student' && studentCourses.some((course) => course.id === id)
 
   // Create assignment form
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -25,7 +28,7 @@ const CourseDetails = () => {
   const [newMaxScore, setNewMaxScore] = useState(100)
   const [creating, setCreating] = useState(false)
 
-  const isOwner = user?.userType === 'teacher' && user.id === selectedCourse?.teacher_id
+  const isOwner = user?.userType === 'teacher' && (selectedCourse?.teacher_ids?.includes(user.id) ?? false)
 
   useEffect(() => {
     if (id) {
@@ -34,13 +37,28 @@ const CourseDetails = () => {
     }
   }, [id, fetchCourseById, listAssignments])
 
+  // Check enrollment status for students
+  useEffect(() => {
+    const checkEnrollment = async () => {
+      if (user?.userType === 'student' && user.id) {
+        setCheckingEnrollment(true)
+        await fetchStudentEnrollments(user.id)
+        setCheckingEnrollment(false)
+      } else {
+        setCheckingEnrollment(false)
+      }
+    }
+    checkEnrollment()
+  }, [user, fetchStudentEnrollments])
+
   const handleEnroll = async () => {
     if (!id || !user?.id) return
     setEnrolling(true)
     setError(null)
     try {
       await enrollStudent(user.id, id)
-      setEnrolled(true)
+      // Refresh enrollments to update the enrolled state
+      await fetchStudentEnrollments(user.id)
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to enroll in course')
     } finally {
@@ -106,7 +124,9 @@ const CourseDetails = () => {
                 </h1>
                 <p className="text-gray-600 flex items-center gap-2">
                   <BookOpen size={18} />
-                  Instructor: {selectedCourse.teacher_name}
+                  {selectedCourse.teacher_names?.length > 0
+                    ? `Instructor${selectedCourse.teacher_names.length > 1 ? 's' : ''}: ${selectedCourse.teacher_names.join(', ')}`
+                    : 'No instructor assigned'}
                 </p>
               </div>
 
@@ -128,7 +148,9 @@ const CourseDetails = () => {
               {/* Student: Enroll */}
               {user?.userType === 'student' && (
                 <div className="pt-6 border-t border-gray-200">
-                  {enrolled ? (
+                  {checkingEnrollment ? (
+                    <p className="text-gray-500">Checking enrollment status...</p>
+                  ) : enrolled ? (
                     <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
                       You are enrolled in this course
                     </div>
