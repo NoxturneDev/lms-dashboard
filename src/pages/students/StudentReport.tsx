@@ -66,7 +66,7 @@ const StudentReport = () => {
                 <div>
                   <p className="text-gray-600 text-sm">Student Name</p>
                   <p className="text-gray-900 font-semibold">
-                    {reportCard.student_info.full_name}
+                    {reportCard.student_info.name}
                   </p>
                 </div>
                 <div>
@@ -96,7 +96,7 @@ const StudentReport = () => {
                 Academic Records
               </h2>
 
-              {reportCard.academic_record.length > 0 ? (
+              {reportCard.academic_record && reportCard.academic_record.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
@@ -104,8 +104,14 @@ const StudentReport = () => {
                         <th className="border border-gray-300 px-6 py-3 text-left font-semibold text-gray-900">
                           Course
                         </th>
+                        <th className="border border-gray-300 px-6 py-3 text-left font-semibold text-gray-900">
+                          Assignment
+                        </th>
                         <th className="border border-gray-300 px-6 py-3 text-center font-semibold text-gray-900">
                           Score
+                        </th>
+                        <th className="border border-gray-300 px-6 py-3 text-center font-semibold text-gray-900">
+                          Max
                         </th>
                         <th className="border border-gray-300 px-6 py-3 text-center font-semibold text-gray-900">
                           Grade
@@ -114,20 +120,20 @@ const StudentReport = () => {
                     </thead>
                     <tbody>
                       {reportCard.academic_record.map((record, idx) => {
-                        const score = record.score
+                        const pct = record.max_score > 0 ? (record.score / record.max_score) * 100 : 0
                         let grade = 'F'
                         let gradeColor = 'text-red-600'
 
-                        if (score >= 90) {
+                        if (pct >= 90) {
                           grade = 'A'
                           gradeColor = 'text-green-600'
-                        } else if (score >= 80) {
+                        } else if (pct >= 80) {
                           grade = 'B'
                           gradeColor = 'text-blue-600'
-                        } else if (score >= 70) {
+                        } else if (pct >= 70) {
                           grade = 'C'
                           gradeColor = 'text-yellow-600'
-                        } else if (score >= 60) {
+                        } else if (pct >= 60) {
                           grade = 'D'
                           gradeColor = 'text-orange-600'
                         }
@@ -137,8 +143,14 @@ const StudentReport = () => {
                             <td className="border border-gray-300 px-6 py-3 text-gray-900">
                               {record.course_title}
                             </td>
+                            <td className="border border-gray-300 px-6 py-3 text-gray-900">
+                              {record.assignment_title}
+                            </td>
                             <td className="border border-gray-300 px-6 py-3 text-center text-gray-900 font-semibold">
-                              {score}
+                              {record.score}
+                            </td>
+                            <td className="border border-gray-300 px-6 py-3 text-center text-gray-500">
+                              {record.max_score}
                             </td>
                             <td className={`border border-gray-300 px-6 py-3 text-center font-bold text-lg ${gradeColor}`}>
                               {grade}
@@ -154,7 +166,7 @@ const StudentReport = () => {
               )}
 
               {/* Summary Stats */}
-              {reportCard.academic_record.length > 0 && (
+              {reportCard.academic_record && reportCard.academic_record.length > 0 && (
                 <div className="mt-8 pt-6 border-t border-gray-200">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-gray-50 rounded-lg p-4">
