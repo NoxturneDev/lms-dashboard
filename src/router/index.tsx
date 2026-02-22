@@ -9,6 +9,14 @@ import StudentReport from '@/pages/students/StudentReport'
 import CourseList from '@/pages/courses/CourseList'
 import CourseDetails from '@/pages/courses/CourseDetails'
 import Gradebook from '@/pages/grades/Gradebook'
+import CourseStats from '@/pages/stats/CourseStats'
+import AdminLogin from '@/pages/admin/AdminLogin'
+import AdminDashboard from '@/pages/admin/AdminDashboard'
+import Schools from '@/pages/admin/Schools'
+import Classes from '@/pages/admin/Classes'
+import AdminTeachers from '@/pages/admin/AdminTeachers'
+import AdminStudents from '@/pages/admin/AdminStudents'
+import Admins from '@/pages/admin/Admins'
 
 export const AppRouter = () => {
   return (
@@ -17,6 +25,7 @@ export const AppRouter = () => {
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Protected Routes */}
         <Route
@@ -78,6 +87,65 @@ export const AppRouter = () => {
           element={
             <ProtectedRoute requiredRole="teacher">
               <Gradebook />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/stats"
+          element={
+            <ProtectedRoute requiredRole="teacher">
+              <CourseStats />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/schools"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Schools />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/classes"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Classes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/teachers"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminTeachers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/students"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminStudents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/admins"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Admins />
             </ProtectedRoute>
           }
         />
