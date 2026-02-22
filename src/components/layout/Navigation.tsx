@@ -2,7 +2,7 @@
 
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/useAuthStore'
-import { LogOut, Home, BookOpen, FileText } from 'lucide-react'
+import { LogOut, Home, BookOpen, FileText, BarChart3 } from 'lucide-react'
 
 const Navigation = () => {
   const navigate = useNavigate()
@@ -42,6 +42,16 @@ const Navigation = () => {
               <BookOpen size={20} />
               <span className="hidden sm:inline">Courses</span>
             </Link>
+
+            {user?.userType === 'teacher' && (
+              <Link
+                to="/stats"
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                <BarChart3 size={20} />
+                <span className="hidden sm:inline">Analytics</span>
+              </Link>
+            )}
 
             {user?.userType === 'student' && (
               <Link
