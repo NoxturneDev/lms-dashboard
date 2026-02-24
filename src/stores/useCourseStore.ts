@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import axiosClient from '@/api/axiosClient'
 
 export interface Course {
-  id: string
+  id: string | any
   school_id: string
   school_name: string
   title: string

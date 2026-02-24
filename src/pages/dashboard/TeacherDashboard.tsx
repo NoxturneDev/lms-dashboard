@@ -1,5 +1,4 @@
 
-
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -30,6 +29,7 @@ const TeacherDashboard = () => {
     const fetchDashboardData = async () => {
       if (!user?.id) return
       try {
+        console.log(user.id)
         const response = await axiosClient.get(`/dashboard/teacher/${user.id}`)
         setDashboardData(response.data)
       } catch (err: any) {
@@ -38,7 +38,7 @@ const TeacherDashboard = () => {
     }
 
     fetchDashboardData()
-    fetchCourses(user?.id)
+    fetchCourses()
   }, [user, fetchCourses])
 
   return (
@@ -87,9 +87,9 @@ const TeacherDashboard = () => {
                   <p className="text-3xl font-bold text-gray-900">
                     {dashboardData.total_courses > 0
                       ? Math.round(
-                          dashboardData.total_students_enrolled /
-                            dashboardData.total_courses,
-                        )
+                        dashboardData.total_students_enrolled /
+                        dashboardData.total_courses,
+                      )
                       : 0}
                   </p>
                 </div>

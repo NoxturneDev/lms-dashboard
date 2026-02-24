@@ -17,6 +17,7 @@ import Classes from '@/pages/admin/Classes'
 import AdminTeachers from '@/pages/admin/AdminTeachers'
 import AdminStudents from '@/pages/admin/AdminStudents'
 import Admins from '@/pages/admin/Admins'
+import StudentAnalytics from '@/pages/admin/StudentAnalytics'
 
 export const AppRouter = () => {
   return (
@@ -146,6 +147,14 @@ export const AppRouter = () => {
           element={
             <ProtectedRoute requiredRole="admin">
               <Admins />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/student-analytics"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <StudentAnalytics />
             </ProtectedRoute>
           }
         />

@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/useAuthStore'
-import { Building2, Users, GraduationCap, School, Shield, LogOut, LayoutDashboard } from 'lucide-react'
+import { Building2, Users, GraduationCap, School, Shield, LogOut, LayoutDashboard, BarChart3 } from 'lucide-react'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -23,6 +23,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/teachers', label: 'Teachers', icon: Users },
     { path: '/admin/students', label: 'Students', icon: GraduationCap },
     { path: '/admin/admins', label: 'Admins', icon: Shield },
+    { path: '/admin/student-analytics', label: 'Student Analytics', icon: BarChart3 },
   ]
 
   return (

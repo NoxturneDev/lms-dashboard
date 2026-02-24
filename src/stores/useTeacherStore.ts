@@ -8,7 +8,8 @@ export interface Teacher {
 }
 
 export interface TeacherCourse {
-  course_id: string
+  id?: string
+  course_id?: string
   school_id: string
   school_name: string
   title: string
